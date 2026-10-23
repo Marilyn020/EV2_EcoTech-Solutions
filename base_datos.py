@@ -69,3 +69,17 @@ class Base_Datos:
         finally:
             if conexion is not None:
                 conexion.close()
+
+    def crear_tabla_empleados(self):
+        sql = """
+        CREATE TABLE IF NOT EXISTS Empleados (
+            ID_Empleados INTEGER PRIMARY KEY,
+            Nombre TEXT NOT NULL,
+            Direccion TEXT,
+            Telefono TEXT,
+            Correo TEXT NOT NULL UNIQUE,
+            Fecha_Inicio TEXT NOT NULL,
+            Salario REAL NOT NULL CHECK(Salario >= 0)
+        )
+        """
+        self.ejecutar(sql)
