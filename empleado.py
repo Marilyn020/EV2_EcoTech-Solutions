@@ -1,4 +1,5 @@
 from datetime import date
+from registro_tiempo import Registro_Tiempo
 
 class Empleado:
     def __init__(self, ID_Empleado, Nombre, Direccion, Telefono, Correo, Fecha_Inicio, Salario):
@@ -12,16 +13,24 @@ class Empleado:
 
         self.__Registros_Tiempo = []
     
-    def registrar_tiempo(self, Horas, Desc):
-        if 0 < Horas <= 24 and Desc.strip():
-            registro = {
-                "Fecha": date.today(),
-                "Horas": Horas,
-                "Descripcion": Desc
-            }
+    def registrar_tiempo(self, horas, desc):
+        if not isinstance(desc, str) or not desc.strip():
+            return False
+
+        registro = Registro_Tiempo(
+            len(self.__Registros_Tiempo) + 1, 
+            date.today(), 
+            horas, 
+            desc
+        )
+
+        if registro.validar_horas():
             self.__Registros_Tiempo.append(registro)
             return True
         return False
+
+    def obtener_registros_tiempo(self):
+        return self.__Registros_Tiempo.copy()
 
     def get_ID_Empleado(self):
         return self.__ID_Empleado
