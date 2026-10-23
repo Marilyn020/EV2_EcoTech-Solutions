@@ -29,7 +29,7 @@ class Proyecto:
             return False
 
         for empleado in self.__empleados_asignados:
-            if empleado.get_id_empleado() == emp,get_id_empleado():
+            if empleado.get_ID_Empleado() == emp.get_ID_Empleado():
                 return False
 
         self.__empleados_asignados.append(emp)
@@ -47,7 +47,7 @@ class Proyecto:
 
         for empleado in self.__empleados_asignados:
             informe += (
-                f"Empleado ID: {empleado.get_id_empleado()}\n"
+                f"Empleado ID: {empleado.get_ID_Empleado()}\n"
             )
 
         return informe
