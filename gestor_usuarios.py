@@ -5,7 +5,7 @@ from validaciones import Validaciones
 class GestorUsuarios:
     def __init__(self, base_datos):
         self.__bd = base_datos
-        self.__bd.crear_tablas()
+        self.__bd.Crear_Tablas()
         
     # Registrar Clientes
     def crear_cliente(self, nombre, email, ciudad):
@@ -44,13 +44,13 @@ class GestorUsuarios:
     # Listar Usuarios
     def listar(self):
         return self.__bd.consultar(
-            "SELECT * FROM ORDER BY id"
+            "SELECT * FROM usuarios ORDER BY ID_Usuario"
         )
 
     # Buscar Usuario
-    def buscvar_por_id(self, id_usuario):
+    def buscar_por_id(self, id_usuario):
         filas = self.__bd.consultar(
-            "SELECT * FROM usuarios WHERE ID = ?", 
+            "SELECT * FROM usuarios WHERE ID_Usuario = ?", 
             (id_usuario,)
         )
 
@@ -62,17 +62,19 @@ class GestorUsuarios:
     # Modificar Nombre
     def actualizar_nombre(self, id_usuario, nombre):
         if not Validaciones.validar_texto_no_vacio(nombre):
-            resultado = self.__bd.ejecutar(
-                "UPDATE usuarios SET nombre = ? WHERE id = ?",
-                (nombre.strip(), id_usuario)
-            )
+            return False 
+            
+        resultado = self.__bd.ejecutar(
+            "UPDATE usuarios SET nombre = ? WHERE ID_Usuario = ?",
+            (nombre.strip(), id_usuario)
+        )
 
-            return resultado is not None and resultado[1] > 0
+        return resultado is not None and resultado[1] > 0
 
     # Eliminar Usuario
     def eliminar(self, id_usuario):
         resultado = self.__bd.ejecutar(
-            "DELETE FROM usuarios WHERE id  = ?",
+            "DELETE FROM usuarios WHERE ID_Usuario  = ?",
             (id_usuario,)
         )
 
