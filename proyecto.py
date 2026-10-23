@@ -22,6 +22,7 @@ class Proyecto:
         self.__fecha_inicio = fecha_inicio
 
         self.__empleados_asignados = []
+        self.__registros_tiempo = []
 
     def asignar_empleado(self, emp):
 
@@ -34,6 +35,24 @@ class Proyecto:
 
         self.__empleados_asignados.append(emp)
         return True
+
+    def registrar_tiempo(self, emp, horas, descripcion):
+
+        if not isinstance(emp, Empleado):
+            return False
+
+        if emp not in self.__empleados_asignados:
+            return False
+
+        if not emp.registrar_tiempo(horas, descripcion):
+            return False
+
+        registros = emp.obtener_registros_tiempo()
+        self.__registros_tiempo.append(registros[-1])
+        return True
+
+    def obtener_registros_tiempo(self):
+        return self.__registros_tiempo.copy()
 
     def exportar_informe(self):
 
