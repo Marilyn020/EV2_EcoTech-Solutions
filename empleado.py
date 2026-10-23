@@ -22,6 +22,9 @@ class Empleado:
             self.__Registros_Tiempo.append(registro)
             return True
         return False
+
+    def get_ID_Empleado(self):
+        return self.__ID_Empleado
     
     def Obtener_Detalles(self):
         return (

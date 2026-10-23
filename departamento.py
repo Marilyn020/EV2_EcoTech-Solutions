@@ -24,7 +24,7 @@ class Departamento:
             return False
 
         for empleado in self.__empleados:
-            if empleado.get_id_empleado() == emp.get_id_empleado()
+            if empleado.get_ID_Empleado() == emp.get_ID_Empleado():
                 return False
 
         self.__empleados.append(emp)
@@ -34,7 +34,7 @@ class Departamento:
 
         for empleado in self.__empleados:
 
-            if  empleado.get_id_empleado() == id_empleado:
+            if  empleado.get_ID_Empleado() == id_empleado:
                  self.__empleados.remove(empleado)
                  return True
 
