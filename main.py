@@ -117,11 +117,24 @@ def menu_empleados():
         except ValueError:
             print("Error: Ingresa datos validos")
 
-def main():
-    print("=="* 20)
-    print("ECOTECH SOLUTIONS")
-    print("Sistema de gestion interna")
-    print("=="* 20)
+def main_principal():
+    while True:
+        print("=="* 20)
+        print("      ECOTECH SOLUTIONS"      )
+        print("   Sistema de gestion interna"   )
+        print("=="* 20)
+        print("1. Gestion de Empleados")
+        print("0. Salir del Siatema")
+        
+        opcion = input("\nSelecione una opcion: ").strip()
+        
+        if opcion == "1":
+            menu_empleados()
+        elif opcion == "0":
+            print("Gracias por utilizar EcoTech Solutions")
+            break
+        else:
+            print("Opcion no valida")
 
     empleado1 = Empleado(
         1,
@@ -159,4 +172,4 @@ def main():
     )
 
 if __name__ == "__main__":
-    menu_empleados()
+    main_principal()
