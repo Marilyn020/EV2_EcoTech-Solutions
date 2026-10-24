@@ -83,3 +83,53 @@ class Base_Datos:
         )
         """
         self.ejecutar(sql)
+
+    def crear_tabla_proyectos(self):
+        sql = """
+        CREATE TABLE IF NOT EXISTS Proyectos (
+        ID_Proyecto INTEGER PRIMARY KEY,
+        Nombre TEXT NOT NULL,
+        Descripcion TEXT NOT NULL,
+        Fecha_Inicio TEXT NOT NULL
+    )
+    """
+        return self.ejecutar(sql)
+    
+    def crear_tabla_asignaciones(self):
+        sql = """
+        CREATE TABLE IF NOT EXISTS proyecto_empleados (
+            ID_Proyecto INTEGER NOT NULL,
+            ID_Empleados INTEGER NOT NULL,
+
+            PRIMARY KEY (ID_Proyecto, ID_Empleados),
+
+            FOREIGN KEY (ID_Proyecto)
+                REFERENCES proyectos(ID_Proyecto)
+                ON DELETE CASCADE,
+
+            FOREIGN KEY (ID_Empleados)
+                REFERENCES empleados(ID_Empleados)
+                ON DELETE CASCADE
+        )
+        """
+        return self.ejecutar(sql)
+    
+    def crear_tabla_registros_tiempo(self):
+        sql = """
+        CREATE TABLE IF NOT EXISTS registros_tiempo (
+            ID_Registro INTEGER PRIMARY KEY,
+            ID_Proyecto INTEGER NOT NULL,
+            ID_Empleados INTEGER NOT NULL,
+            Fecha TEXT NOT NULL,
+            Horas REAL NOT NULL CHECK (Horas > 0 AND Horas <= 24),
+            Descripcion TEXT NOT NULL,
+
+            FOREIGN KEY (ID_Proyecto, ID_Empleados)
+                REFERENCES proyecto_empleados(
+                    ID_Proyecto, ID_Empleados
+                )
+                ON DELETE CASCADE
+        )
+        """
+        return self.ejecutar(sql)
+    
