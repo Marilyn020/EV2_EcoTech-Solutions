@@ -72,6 +72,55 @@ class GestorEmpleados:
             return filas [0]
         return None
 
+    #Actualizar Campo
+    def actualizar_campo(self, ID_Empleado, campo, valor):
+        columnas = {"nombre": "Nombre",
+                    "direccion": "Direccion",
+                    "telefono": "Telefono",
+                    "correo": "Correo",
+                    "fecha_inicio": "Fecha_Inicio",
+                    "salario": "Salario"
+        }
+        if campo not in columnas:
+            return False
+
+        if type(ID_Empleado) is not int or ID_Empleado <= 0:
+            return False
+
+        if campo == "salario":
+            try:
+                valor = float(valor)
+            except (ValueError, TypeError):
+                return False
+
+            import math
+            if not math.isfinite(valor) or valor < 0:
+                return False
+
+        elif campo == "fecha_inicio":
+            try:
+                valor = date.fromisoformat(valor).isoformat()
+            except (ValueError, TypeError):
+                return False
+        else:
+            if not isinstance(valor, str) or not valor.strip():
+                return False
+            valor = valor.strip()
+
+            if campo == "correo":
+                if not Validaciones.validar_email(valor):
+                    return False
+
+            sql = (f"UPDATE empleados SET {columnas[campo]} = ? "
+                   "WHERE ID_Empleados = ?"
+            )
+
+            resultado = self.__bd.ejecutar(
+                sql, (valor, ID_Empleado)
+            )
+
+            return resultado is not None and resultado[1] > 0
+        
     #Actualizar Nombre
     def actualizar_nombre(self, ID_Empleados, nombre):
         if not isinstance(nombre, str):

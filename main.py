@@ -14,7 +14,7 @@ def menu_empleados():
         print("1. Registrar Empleado")
         print("2. Listar Empleados")
         print("3. Buscar Empleado por ID")
-        print("4. Actualizar Nombre")
+        print("4. Actualizar Empleado")
         print("5. Eliminar Empleado")
         print("0. Salir")
 
@@ -56,12 +56,47 @@ def menu_empleados():
                     print("Empleado no encontrado")
 
             elif opcion == "4":
-                id_empleado = int(input("ID a actualizar: "))
-                nombre = input("Nuevo nombre: ")
+                id_empleado = int(input("ID del empleado a modificar: ")
+                )
 
-                resultado = gestor.actualizar_nombre(id_empleado, nombre)
-                print("Actualizar:", resultado)
+                print("\n====== MODIFICAR EMPLEADO ======")
+                print("1. Cambiar Nombre")
+                print("2. Cambiar Direccion")
+                print("3. Cambiar Telefono")
+                print("4. Cambiar Correo")
+                print("5. Cambiar Fecha de Inicio")
+                print("6. Cambiar Salario")
+                print("0. Cancelar")
 
+                seleccion = input("Seleccione una Opcion: ")
+                campos = {
+                    "1": "nombre",
+                    "2": "direccion",
+                    "3": "telefono",
+                    "4": "correo",
+                    "5": "fecha_inicio",
+                    "6": "salario"
+                }
+
+                if seleccion == "0":
+                    print("Operacion Cancelada")
+                
+                elif seleccion in campos:
+                    campo = campos[seleccion]
+                    nuevo_valor = input(f"Ingrese nuevo valor para {campo}: ")
+
+                    resultado = gestor.actualizar_campo(
+                        id_empleado,
+                        campo,
+                        nuevo_valor
+                    )
+
+                    if resultado:
+                        print("Empleado actualizado correctamente")
+                    else:
+                        print("No se pudo actualizar el empleado")
+                else:
+                    print("Opcion no valida")
             elif opcion == "5":
                 id_empleado = int(input("ID a eliminar: "))
                 confirmar = input("confirmar eliminacion (Si/No): ").strip().lower()
