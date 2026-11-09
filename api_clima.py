@@ -21,7 +21,8 @@ def consultar_clima():
             "name": ciudad,
             "count": 1,
             "language": "es",
-            "format": "json"
+            "format": "json",
+            "countryCode": "CL"
         })
 
         url_ciudad = (

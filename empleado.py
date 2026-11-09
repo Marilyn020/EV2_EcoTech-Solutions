@@ -35,6 +35,24 @@ class Empleado:
     def get_ID_Empleado(self):
         return self.__ID_Empleado
     
+    def get_Nombre(self):
+        return self.__Nombre
+
+    def get_Direccion(self):
+        return self.__Direccion
+
+    def get_Telefono(self):
+        return self.__Telefono
+
+    def get_Correo(self):
+        return self.__Correo
+
+    def get_Fecha_Inicio(self):
+        return self.__Fecha_Inicio
+
+    def get_Salario(self):
+        return self.__Salario
+
     def Obtener_Detalles(self):
         return (
             f"ID: {self.__ID_Empleado}\n"
