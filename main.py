@@ -4,7 +4,8 @@ from empleado import Empleado
 from gestor_empleados import GestorEmpleados
 from gestor_proyectos import GestorProyectos
 from proyecto import Proyecto
-
+from api_clima import consultar_clima
+from seguridad_clima import iniciar_sesion
 
 def crear_empleado_desde_datos(datos):
     """Construye un Empleado usando una fila de la tabla empleados."""
@@ -462,6 +463,7 @@ def main_principal():
         print("=" * 40)
         print("1. Gestion de empleados")
         print("2. Gestion de proyectos")
+        print("3. Consultar clima")
         print("0. Salir del sistema")
 
         opcion = input("\nSeleccione una opcion: ").strip()
@@ -470,6 +472,11 @@ def main_principal():
             menu_empleados()
         elif opcion == "2":
             menu_proyectos(proyectos)
+        elif opcion == "3":
+            if iniciar_sesion():
+                consultar_clima()
+            else:
+                print("Acceso denegado. No puedes consultar el clima.")
         elif opcion == "0":
             print("Gracias por utilizar EcoTech Solutions")
             break

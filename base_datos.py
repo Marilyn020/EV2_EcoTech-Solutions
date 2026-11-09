@@ -132,4 +132,15 @@ class Base_Datos:
         )
         """
         return self.ejecutar(sql)
+
     
+    def crear_tabla_credenciales(self):
+        sql = """
+        CREATE TABLE IF NOT EXISTS credenciales_clima (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            usuario TEXT NOT NULL UNIQUE,
+            sal BLOB NOT NULL,
+            clave_hash BLOB NOT NULL
+        )
+        """
+        return self.ejecutar(sql)
