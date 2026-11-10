@@ -1,7 +1,7 @@
 from datetime import date
 from math import isfinite
 from base_datos import Base_Datos
-from validaciones import Validaciones
+from Seguridad.validaciones import Validaciones
 
 class GestorEmpleados:
     def __init__(self, base_datos):

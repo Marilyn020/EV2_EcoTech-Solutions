@@ -1,12 +1,12 @@
 from datetime import date
 from base_datos import Base_Datos
 from Modelos.empleado import Empleado
-from gestor_empleados import GestorEmpleados
-from gestor_proyectos import GestorProyectos
+from Gestores.gestor_empleados import GestorEmpleados
+from Gestores.gestor_proyectos import GestorProyectos
 from Modelos.proyecto import Proyecto
-from api_clima import consultar_clima
-from seguridad_clima import iniciar_sesion
-from gestor_departamentos import GestorDepartamentos
+from Servicios.api_clima import consultar_clima
+from Seguridad.seguridad_clima import iniciar_sesion
+from Gestores.gestor_departamentos import GestorDepartamentos
 
 def crear_empleado_desde_datos(datos):
     """Construye un Empleado usando una fila de la tabla empleados."""

@@ -2,7 +2,7 @@
 from tempfile import TemporaryDirectory
 from pathlib import Path
 from base_datos import Base_Datos
-from gestor_departamentos import GestorDepartamentos
+from Gestores.gestor_departamentos import GestorDepartamentos
 
 
 with TemporaryDirectory() as carpeta:

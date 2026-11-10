@@ -4,8 +4,8 @@ from tempfile import TemporaryDirectory
 from pathlib import Path
 
 from base_datos import Base_Datos
-from gestor_empleados import GestorEmpleados
-from gestor_proyectos import GestorProyectos
+from Gestores.gestor_empleados import GestorEmpleados
+from Gestores.gestor_proyectos import GestorProyectos
 
 
 with TemporaryDirectory() as carpeta:
