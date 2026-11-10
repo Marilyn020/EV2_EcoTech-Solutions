@@ -5,7 +5,7 @@ from Gestores.gestor_empleados import GestorEmpleados
 from Gestores.gestor_proyectos import GestorProyectos
 from Modelos.proyecto import Proyecto
 from Servicios.api_clima import consultar_clima
-from Seguridad.seguridad_clima import iniciar_sesion
+from Seguridad.seguridad_clima import iniciar_sesion, registrar_usuario, eliminar_usuario
 from Gestores.gestor_departamentos import GestorDepartamentos
 
 def crear_empleado_desde_datos(datos):
@@ -814,25 +814,31 @@ def main_principal():
         print("         ECOTECH SOLUTIONS")
         print("    Sistema de gestión interna")
         print("=" * 40)
-        print("1. Gestión de empleados")
-        print("2. Gestión de proyectos")
-        print("3. Gestión de departamentos")
-        print("4. Consultar clima")
+        print("1. Registrar usuario")
+        print("2. Gestión de empleados")
+        print("3. Gestión de proyectos")
+        print("4. Gestión de departamentos")
+        print("5. Consultar clima")
+        print("6. Eliminar usuario")
         print("0. Salir del sistema")
 
         opcion = input("\nSeleccione una opcion: ").strip()
 
         if opcion == "1":
-            menu_empleados()
+            registrar_usuario()
         elif opcion == "2":
-            menu_proyectos(proyectos)
+            menu_empleados()
         elif opcion == "3":
-            menu_departamentos()
+            menu_proyectos(proyectos)
         elif opcion == "4":
+            menu_departamentos()
+        elif opcion == "5":
             if iniciar_sesion():
                 consultar_clima()
             else:
                 print("Acceso denegado. No puedes consultar el clima.")
+        elif opcion == "6":
+            eliminar_usuario()
         elif opcion == "0":
             print("Gracias por utilizar EcoTech Solutions")
             break

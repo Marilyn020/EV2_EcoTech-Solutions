@@ -1,18 +1,16 @@
 import json
 from urllib.request import urlopen
 from urllib.parse import urlencode
+from Seguridad.validaciones import Validaciones
 
 
 def consultar_clima():
-    ciudad = input("Ingrese una ciudad: ").strip()
+    ciudad = Validaciones.sanear_ciudad(
+        input("Ingrese una ciudad: ")
+    )
 
-    # Validar lo que escribe el usuario
-    if len(ciudad) < 2 or len(ciudad) > 50:
+    if ciudad is None:
         print("Error: ingrese una ciudad válida.")
-        return
-
-    if not all(letra.isalpha() or letra in " -" for letra in ciudad):
-        print("Error: la ciudad contiene caracteres no permitidos.")
         return
 
     try:

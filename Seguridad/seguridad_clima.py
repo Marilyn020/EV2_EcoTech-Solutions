@@ -97,6 +97,55 @@ def iniciar_sesion():
     print("Credenciales incorrectas.")
     return False
 
+def eliminar_usuario():
+    bd = Base_Datos()
+    bd.crear_tabla_credenciales()
+
+    usuario = input("Usuario que deseas eliminar: ").strip()
+    contraseña = getpass("Contraseña de la cuenta: ")
+
+    sql = """
+        SELECT sal, clave_hash
+        FROM credenciales_clima
+        WHERE usuario = ?
+    """
+
+    resultado = bd.consultar(sql, (usuario,))
+
+    if not resultado:
+        print("Usuario o contraseña incorrectos.")
+        return
+
+    sal, clave_guardada = resultado[0]
+
+    clave_ingresada = hashlib.pbkdf2_hmac(
+        "sha256",
+        contraseña.encode("utf-8"),
+        sal,
+        300000
+    )
+
+    if not hmac.compare_digest(clave_guardada, clave_ingresada):
+        print("Usuario o contraseña incorrectos.")
+        return
+
+    confirmar = input("¿Confirmas eliminar tu cuenta? (si/no): ")
+    
+    if confirmar.strip().lower() != "si":
+        print("Eliminación cancelada.")
+        return
+
+    sql_eliminar = """
+        DELETE FROM credenciales_clima
+        WHERE usuario = ?
+    """
+
+    eliminado = bd.ejecutar(sql_eliminar, (usuario,))
+
+    if eliminado is not None and eliminado[1] == 1:
+        print("Usuario eliminado correctamente.")
+    else:
+        print("No se pudo eliminar el usuario.")
 
 if __name__ == "__main__":
     registrar_usuario()
