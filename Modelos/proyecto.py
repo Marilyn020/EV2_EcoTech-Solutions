@@ -1,6 +1,6 @@
 from datetime import date
-from empleado import Empleado
-from registro_tiempo import Registro_Tiempo
+from Modelos.empleado import Empleado
+from Modelos.registro_tiempo import Registro_Tiempo
 
 class Proyecto:
     def __init__(self, id_proyecto, nombre, descripcion, fecha_inicio):

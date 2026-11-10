@@ -27,20 +27,6 @@ class Base_Datos:
             if conexion is not None:
                 conexion.close()
 
-    def Crear_Tablas(self):
-        sql = """
-        CREATE TABLE IF NOT EXISTS Usuarios (
-            ID_Usuario INTEGER PRIMARY KEY AUTOINCREMENT,
-            Tipo TEXT NOT NULL,
-            Nombre TEXT NOT NULL,
-            Email TEXT NOT NULL UNIQUE,
-            Ciudad_Frecuente TEXT,
-            Nivel_Acceso INTEGER
-        )
-        """
-
-        self.ejecutar(sql)
-
     def ejecutar(self, sql, parametros=()):
         conexion = None
         try:
@@ -133,7 +119,6 @@ class Base_Datos:
         """
         return self.ejecutar(sql)
 
-    
     def crear_tabla_credenciales(self):
         sql = """
         CREATE TABLE IF NOT EXISTS credenciales_clima (
@@ -144,7 +129,6 @@ class Base_Datos:
         )
         """
         return self.ejecutar(sql)
-
 
     def crear_tabla_departamentos(self):
         sql = """

@@ -1,7 +1,7 @@
 import hashlib
 import hmac
 import secrets
-from empleado import Empleado
+from Modelos.empleado import Empleado
 
 
 class Autenticacion:

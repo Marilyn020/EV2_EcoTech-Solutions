@@ -179,3 +179,72 @@ class GestorProyectos:
         """
         return self.__bd.consultar(sql, (id_proyecto,))
     
+    def eliminar_registro_tiempo(self, id_proyecto, id_registro):
+
+        # Validar los ID
+        if type(id_proyecto) is not int or id_proyecto <= 0:
+            return False
+
+        if type(id_registro) is not int or id_registro <= 0:
+            return False
+
+        # Eliminar el registro de SQLite
+        sql = """
+            DELETE FROM registros_tiempo
+            WHERE ID_Proyecto = ? AND ID_Registro = ?
+        """
+
+        resultado = self.__bd.ejecutar(
+            sql, (id_proyecto, id_registro)
+        )
+
+        return resultado is not None and resultado[1] > 0
+
+    def actualizar_registro_tiempo(self, id_proyecto, id_registro, campo, valor):
+
+        # Validar los ID
+        if type(id_proyecto) is not int or id_proyecto <= 0:
+            return False
+
+        if type(id_registro) is not int or id_registro <= 0:
+            return False
+
+        # Validar las horas trabajadas
+        if campo == "horas":
+            try:
+                if isinstance(valor, bool):
+                    return False
+
+                valor = float(valor)
+
+                if not isfinite(valor) or valor <= 0 or valor > 24:
+                    return False
+
+            except (ValueError, TypeError, OverflowError):
+                return False
+
+            columna = "Horas"
+
+        # Validar la descripcion
+        elif campo == "descripcion":
+            if not isinstance(valor, str) or not valor.strip():
+                return False
+
+            valor = valor.strip()
+            columna = "Descripcion"
+
+        else:
+            return False
+
+        # Actualizar el registro en SQLite
+        sql = f"""
+            UPDATE registros_tiempo
+            SET {columna} = ?
+            WHERE ID_Proyecto = ? AND ID_Registro = ?
+        """
+
+        resultado = self.__bd.ejecutar(
+            sql, (valor, id_proyecto, id_registro)
+        )
+
+        return resultado is not None and resultado[1] > 0

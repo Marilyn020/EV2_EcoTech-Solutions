@@ -1,4 +1,4 @@
-from empleado import Empleado
+from Modelos.empleado import Empleado
 
 class Departamento:
 

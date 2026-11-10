@@ -1,10 +1,10 @@
 
 from datetime import date
 
-from empleado import Empleado
-from gerente import Gerente
-from departamento import Departamento
-from proyecto import Proyecto
+from Modelos.empleado import Empleado
+from Modelos.gerente import Gerente
+from Modelos.departamento import Departamento
+from Modelos.proyecto import Proyecto
 from autenticacion import Autenticacion
 from base_datos import Base_Datos
 

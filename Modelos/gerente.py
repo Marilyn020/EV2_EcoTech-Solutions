@@ -1,5 +1,5 @@
-from empleado import Empleado
-from proyecto import Proyecto
+from Modelos.empleado import Empleado
+from Modelos.proyecto import Proyecto
 
 
 class Gerente(Empleado):

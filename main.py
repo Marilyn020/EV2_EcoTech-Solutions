@@ -1,9 +1,9 @@
 from datetime import date
 from base_datos import Base_Datos
-from empleado import Empleado
+from Modelos.empleado import Empleado
 from gestor_empleados import GestorEmpleados
 from gestor_proyectos import GestorProyectos
-from proyecto import Proyecto
+from Modelos.proyecto import Proyecto
 from api_clima import consultar_clima
 from seguridad_clima import iniciar_sesion
 from gestor_departamentos import GestorDepartamentos
@@ -86,6 +86,8 @@ def menu_proyectos(proyectos):
         print("5. Registrar horas trabajadas")
         print("6. Modificar proyecto")
         print("7. Ver registros de horas")
+        print("8. Eliminar registro de horas")
+        print("9. Modificar registro de horas")
         print("0. Volver al menu principal")
 
         opcion = input("\nSeleccione una opcion: ").strip()
@@ -119,12 +121,14 @@ def menu_proyectos(proyectos):
             if not proyectos:
                 print("No hay proyectos registrados")
             else:
-                for proyecto in proyectos.values():
+                for id_proyecto, proyecto in proyectos.items():
                     print("\n" + proyecto.exportar_informe())
-                    print(
-                        "Registros de horas:",
-                        len(proyecto.obtener_registros_tiempo()),
+
+                    registros = gestor_proyectos.listar_registros_tiempo(
+                        id_proyecto
                     )
+
+                    print("Registros de horas:", len(registros))
 
         elif opcion == "3":
             try:
@@ -314,6 +318,137 @@ def menu_proyectos(proyectos):
 
             except ValueError:
                 print("Error: ingresa un ID valido")
+
+        elif opcion == "8":
+            try:
+                id_proyecto = int(
+                    input("ID del proyecto: ")
+                )
+
+                if id_proyecto not in proyectos:
+                    print("Proyecto no encontrado.")
+                    continue
+
+                registros = gestor_proyectos.listar_registros_tiempo(
+                    id_proyecto
+                )
+
+                if not registros:
+                    print("Este proyecto no tiene registros de horas.")
+                    continue
+
+                print("\n===== REGISTROS DISPONIBLES =====")
+
+                for id_registro, id_empleado, fecha, horas, descripcion in registros:
+                    print(
+                        f"ID: {id_registro} | "
+                        f"Empleado: {id_empleado} | "
+                        f"Horas: {horas} | "
+                        f"Descripcion: {descripcion}"
+                    )
+
+                id_registro = int(
+                    input("ID del registro a eliminar: ")
+                )
+
+                registro = next(
+                    (r for r in registros if r[0] == id_registro),
+                    None
+                )
+
+                if registro is None:
+                    print("Registro no encontrado.")
+                    continue
+
+                confirmar = input(
+                    "¿Seguro que deseas eliminarlo? (Si/No): "
+                ).strip().lower()
+
+                if confirmar not in ("si", "sí", "s"):
+                    print("Operacion cancelada.")
+                    continue
+
+                resultado = gestor_proyectos.eliminar_registro_tiempo(
+                    id_proyecto, id_registro
+                )
+
+                if resultado:
+                    print("Registro eliminado correctamente.")
+                else:
+                    print("No se pudo eliminar el registro.")
+
+            except ValueError:
+                print("Error: ingrese un ID numerico valido.")
+
+        elif opcion == "9":
+            try:
+                id_proyecto = int(
+                    input("ID del proyecto: ")
+                )
+
+                if id_proyecto not in proyectos:
+                    print("Proyecto no encontrado.")
+                    continue
+
+                registros = gestor_proyectos.listar_registros_tiempo(
+                    id_proyecto
+                )
+
+                if not registros:
+                    print("Este proyecto no tiene registros de horas.")
+                    continue
+
+                print("\n===== REGISTROS DE HORAS =====")
+
+                for registro in registros:
+                    print(
+                        f"ID: {registro[0]} | "
+                        f"Horas: {registro[3]} | "
+                        f"Descripcion: {registro[4]}"
+                    )
+
+                id_registro = int(
+                    input("ID del registro a modificar: ")
+                )
+
+                registro = next(
+                    (r for r in registros if r[0] == id_registro),
+                    None
+                )
+
+                if registro is None:
+                    print("Registro no encontrado.")
+                    continue
+
+                print("\n¿Que deseas modificar?")
+                print("1. Horas trabajadas")
+                print("2. Descripcion")
+
+                seleccion = input("Seleccione una opcion: ").strip()
+
+                if seleccion == "1":
+                    campo = "horas"
+                    valor = input("Ingrese las nuevas horas: ")
+
+                elif seleccion == "2":
+                    campo = "descripcion"
+                    valor = input("Ingrese la nueva descripcion: ")
+
+                else:
+                    print("Opcion no valida.")
+                    continue
+
+                resultado = gestor_proyectos.actualizar_registro_tiempo(
+                    id_proyecto, id_registro, campo, valor
+                )
+
+                if resultado:
+                    print("Registro actualizado correctamente.")
+                else:
+                    print("No se pudo actualizar el registro.")
+
+            except ValueError:
+                print("Error: ingrese un ID numerico valido.")
 
         elif opcion == "0":
             print("Volviendo al menu principal...")

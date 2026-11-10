@@ -1,5 +1,5 @@
 from datetime import date
-from registro_tiempo import Registro_Tiempo
+from Modelos.registro_tiempo import Registro_Tiempo
 
 class Empleado:
     def __init__(self, ID_Empleado, Nombre, Direccion, Telefono, Correo, Fecha_Inicio, Salario):
