@@ -6,6 +6,7 @@ from gestor_proyectos import GestorProyectos
 from proyecto import Proyecto
 from api_clima import consultar_clima
 from seguridad_clima import iniciar_sesion
+from gestor_departamentos import GestorDepartamentos
 
 def crear_empleado_desde_datos(datos):
     """Construye un Empleado usando una fila de la tabla empleados."""
@@ -453,17 +454,235 @@ def menu_empleados():
             print("Error: ingresa datos validos:", error)
 
 
+def menu_departamentos():
+    bd = Base_Datos()
+    bd.crear_tabla_empleados()
+    gestor = GestorDepartamentos(bd)
+
+    while True:
+        print("\n====== GESTION DE DEPARTAMENTOS ======")
+        print("1. Registrar departamento")
+        print("2. Listar departamentos")
+        print("3. Buscar departamento por ID")
+        print("4. Modificar departamento")
+        print("5. Eliminar departamento")
+        print("6. Asignar empleado a departamento")
+        print("7. Listar empleados de un departamento")
+        print("8. Asignar gerente a departamento")
+        print("0. Volver al menu principal")
+
+        opcion = input("\nSeleccione una opcion: ").strip()
+
+        if opcion == "1":
+            nombre = input("Nombre del departamento: ").strip()
+
+            id_nuevo = gestor.crear_departamento(nombre)
+
+            if id_nuevo is not None:
+                print("Departamento registrado correctamente.")
+                print("ID asignado:", id_nuevo)
+        elif opcion == "2":
+            departamentos = gestor.listar_departamentos()
+
+            if departamentos:
+                print("\n===== DEPARTAMENTOS REGISTRADOS =====")
+
+                for id_departamento, nombre, activo in departamentos:
+                    estado = "Activo" if activo == 1 else "Inactivo"
+
+                    print(f"\nID: {id_departamento}")
+                    print(f"Nombre: {nombre}")
+                    print(f"Estado: {estado}")
+            else:
+                print("No hay departamentos registrados.")
+        elif opcion == "3":
+            try:
+                id_departamento = int(
+                    input("Ingrese el ID del departamento: ")
+                )
+
+                if id_departamento <= 0:
+                    print("El ID debe ser mayor que cero.")
+                    continue
+
+                departamento = gestor.buscar_por_id(id_departamento)
+
+                if departamento:
+                    id_dep, nombre, activo = departamento
+
+                    estado = "Activo" if activo == 1 else "Inactivo"
+
+                    print("\n===== DEPARTAMENTO ENCONTRADO =====")
+                    print(f"ID: {id_dep}")
+                    print(f"Nombre: {nombre}")
+                    print(f"Estado: {estado}")
+                else:
+                    print("Departamento no encontrado.")
+
+            except ValueError:
+                print("Error: debe ingresar un ID numerico.")
+        
+        elif opcion == "4":
+            try:
+                id_departamento = int(
+                    input("ID del departamento a modificar: ")
+                )
+
+                # Comprobar que el departamento existe
+                departamento = gestor.buscar_por_id(id_departamento)
+
+                if departamento is None:
+                    print("Departamento no encontrado.")
+                    continue
+
+                print("\nDepartamento actual:", departamento[1])
+
+                nuevo_nombre = input(
+                    "Ingrese el nuevo nombre: "
+                ).strip()
+
+                # Actualizar el departamento
+                resultado = gestor.modificar_departamento(
+                    id_departamento, nuevo_nombre
+                )
+
+                if resultado:
+                    print("Departamento modificado correctamente.")
+                else:
+                    print("No se pudo modificar el departamento.")
+
+            except ValueError:
+                print("Error: ingrese un ID numerico valido.")
+        elif opcion == "5":
+            try:
+                id_departamento = int(
+                    input("ID del departamento a eliminar: ")
+                )
+
+                # Comprobar que el departamento existe
+                departamento = gestor.buscar_por_id(id_departamento)
+
+                if departamento is None:
+                    print("Departamento no encontrado.")
+                    continue
+
+                print("\nDepartamento seleccionado:")
+                print("ID:", departamento[0])
+                print("Nombre:", departamento[1])
+
+                # Solicitar confirmacion
+                confirmar = input(
+                    "¿Seguro que deseas eliminarlo? (Si/No): "
+                ).strip().lower()
+
+                if confirmar in ("si", "sí", "s"):
+                    resultado = gestor.eliminar_departamento(
+                        id_departamento
+                    )
+
+                    if resultado:
+                        print("Departamento eliminado correctamente.")
+                    else:
+                        print("No se pudo eliminar el departamento.")
+                else:
+                    print("Operacion cancelada.")
+
+            except ValueError:
+                print("Error: ingrese un ID numerico valido.")
+        elif opcion == "6":
+            try:
+                id_empleado = int(
+                    input("Ingrese el ID del empleado: ")
+                )
+
+                id_departamento = int(
+                    input("Ingrese el ID del departamento: ")
+                )
+
+                resultado = gestor.asignar_empleado(
+                    id_empleado, id_departamento
+                )
+
+                if resultado:
+                    print("Empleado asignado correctamente.")
+                else:
+                    print("No se pudo asignar el empleado.")
+
+            except ValueError:
+                print("Error: debe ingresar ID numericos.")
+        
+        elif opcion == "7":
+            try:
+                id_departamento = int(
+                    input("Ingrese el ID del departamento: ")
+                )
+
+                # Comprobar que existe el departamento
+                departamento = gestor.buscar_por_id(id_departamento)
+
+                if departamento is None:
+                    print("Departamento no encontrado.")
+                    continue
+
+                # Consultar los empleados asignados
+                empleados = gestor.listar_empleados_departamento(
+                    id_departamento
+                )
+
+                print("\n===== EMPLEADOS DEL DEPARTAMENTO =====")
+                print("Departamento:", departamento[1])
+
+                if empleados:
+                    for id_empleado, nombre in empleados:
+                        print(f"ID: {id_empleado} | Nombre: {nombre}")
+                else:
+                    print("No hay empleados asignados.")
+
+            except ValueError:
+                print("Error: ingrese un ID numerico valido.")
+        
+        elif opcion == "8":
+            try:
+                id_departamento = int(
+                    input("Ingrese el ID del departamento: ")
+                )
+
+                id_gerente = int(
+                    input("Ingrese el ID del empleado que sera gerente: ")
+                )
+
+                resultado = gestor.asignar_gerente(
+                    id_departamento, id_gerente
+                )
+
+                if resultado:
+                    print("Gerente asignado correctamente.")
+                else:
+                    print("No se pudo asignar el gerente.")
+
+            except ValueError:
+                print("Error: debe ingresar ID numericos.")
+
+        elif opcion == "0":
+            print("Volviendo al menu principal...")
+            break
+
+        else:
+            print("Opcion no valida.")
+
+
 def main_principal():
     proyectos = {}
 
     while True:
         print("\n" + "=" * 40)
         print("         ECOTECH SOLUTIONS")
-        print("    Sistema de gestion interna")
+        print("    Sistema de gestión interna")
         print("=" * 40)
-        print("1. Gestion de empleados")
-        print("2. Gestion de proyectos")
-        print("3. Consultar clima")
+        print("1. Gestión de empleados")
+        print("2. Gestión de proyectos")
+        print("3. Gestión de departamentos")
+        print("4. Consultar clima")
         print("0. Salir del sistema")
 
         opcion = input("\nSeleccione una opcion: ").strip()
@@ -473,6 +692,8 @@ def main_principal():
         elif opcion == "2":
             menu_proyectos(proyectos)
         elif opcion == "3":
+            menu_departamentos()
+        elif opcion == "4":
             if iniciar_sesion():
                 consultar_clima()
             else:

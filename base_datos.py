@@ -144,3 +144,36 @@ class Base_Datos:
         )
         """
         return self.ejecutar(sql)
+
+
+    def crear_tabla_departamentos(self):
+        sql = """
+        CREATE TABLE IF NOT EXISTS Departamentos (
+            ID_Departamento INTEGER PRIMARY KEY AUTOINCREMENT,
+            Nombre TEXT NOT NULL UNIQUE,
+            Esta_Activo INTEGER NOT NULL DEFAULT 1,
+            ID_Gerente INTEGER,
+
+            FOREIGN KEY (ID_Gerente)
+                REFERENCES Empleados(ID_Empleados)
+                ON DELETE SET NULL
+        )
+        """
+        return self.ejecutar(sql)
+
+    def crear_tabla_empleado_departamento(self):
+        sql = """
+        CREATE TABLE IF NOT EXISTS empleado_departamento (
+            ID_Empleados INTEGER PRIMARY KEY,
+            ID_Departamento INTEGER NOT NULL,
+
+            FOREIGN KEY (ID_Empleados)
+                REFERENCES Empleados(ID_Empleados)
+                ON DELETE CASCADE,
+
+            FOREIGN KEY (ID_Departamento)
+                REFERENCES Departamentos(ID_Departamento)
+                ON DELETE CASCADE
+        )
+        """
+        return self.ejecutar(sql)
