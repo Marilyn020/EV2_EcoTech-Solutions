@@ -5,6 +5,7 @@ from Gestores.gestor_empleados import GestorEmpleados
 from Gestores.gestor_proyectos import GestorProyectos
 from Modelos.proyecto import Proyecto
 from Servicios.api_clima import consultar_clima
+from Servicios.api_monedas import consultar_dolar
 from Seguridad.seguridad_clima import iniciar_sesion, registrar_usuario, eliminar_usuario
 from Gestores.gestor_departamentos import GestorDepartamentos
 
@@ -815,11 +816,12 @@ def main_principal():
         print("    Sistema de gestión interna")
         print("=" * 40)
         print("1. Registrar usuario")
-        print("2. Gestión de empleados")
-        print("3. Gestión de proyectos")
-        print("4. Gestión de departamentos")
-        print("5. Consultar clima")
-        print("6. Eliminar usuario")
+        print("2. Eliminar usuario")
+        print("3. Gestión de empleados")
+        print("4. Gestión de proyectos")
+        print("5. Gestión de departamentos")
+        print("6. Consultar clima")
+        print("7. Consultar tipo de cambio")
         print("0. Salir del sistema")
 
         opcion = input("\nSeleccione una opcion: ").strip()
@@ -827,24 +829,28 @@ def main_principal():
         if opcion == "1":
             registrar_usuario()
         elif opcion == "2":
-            menu_empleados()
+            eliminar_usuario()
         elif opcion == "3":
-            menu_proyectos(proyectos)
+            menu_empleados()
         elif opcion == "4":
-            menu_departamentos()
+            menu_proyectos(proyectos)
         elif opcion == "5":
+            menu_departamentos()
+        elif opcion == "6":
             if iniciar_sesion():
                 consultar_clima()
             else:
                 print("Acceso denegado. No puedes consultar el clima.")
-        elif opcion == "6":
-            eliminar_usuario()
+        elif opcion == "7":
+            if iniciar_sesion():
+                consultar_dolar()
+            else:
+                print("Acceso denegado. No puedes consultar el tipo de cambio.")
         elif opcion == "0":
             print("Gracias por utilizar EcoTech Solutions")
             break
         else:
             print("Opcion no valida")
-
 
 if __name__ == "__main__":
     main_principal()
