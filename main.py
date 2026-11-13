@@ -5,7 +5,7 @@ from Gestores.gestor_empleados import GestorEmpleados
 from Gestores.gestor_proyectos import GestorProyectos
 from Modelos.proyecto import Proyecto
 from Servicios.api_clima import consultar_clima
-from Servicios.api_monedas import consultar_dolar
+from Servicios.api_monedas import consultar_dolar, calcular_pago_internacional
 from Seguridad.seguridad_clima import iniciar_sesion, registrar_usuario, eliminar_usuario
 from Gestores.gestor_departamentos import GestorDepartamentos
 
@@ -822,6 +822,7 @@ def main_principal():
         print("5. Gestión de departamentos")
         print("6. Consultar clima")
         print("7. Consultar tipo de cambio")
+        print("8. Calcular pago internacional")
         print("0. Salir del sistema")
 
         opcion = input("\nSeleccione una opcion: ").strip()
@@ -846,6 +847,11 @@ def main_principal():
                 consultar_dolar()
             else:
                 print("Acceso denegado. No puedes consultar el tipo de cambio.")
+        elif opcion == "8":
+            if iniciar_sesion():
+                calcular_pago_internacional()
+            else:
+                print("Acceso denegado. No puedes calcular pagos internacionales.")
         elif opcion == "0":
             print("Gracias por utilizar EcoTech Solutions")
             break

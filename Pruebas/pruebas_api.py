@@ -2,7 +2,7 @@ import unittest
 from unittest.mock import patch
 from urllib.error import HTTPError
 from io import StringIO
-from Servicios.api_monedas import consultar_dolar
+from Servicios.api_monedas import consultar_dolar, convertir_pago_a_dolares
 from Servicios.api_clima import consultar_clima
 
 class PruebasAPI(unittest.TestCase):
@@ -149,6 +149,16 @@ class PruebasAPI(unittest.TestCase):
             "La API entregó datos incorrectos o incompletos.",
             salida.getvalue()
         )
+
+    def test_conversion_pago_internacional(self):
+        monto_clp = 100000
+        valor_dolar = 985.43
+
+        resultado = convertir_pago_a_dolares(
+            monto_clp, valor_dolar
+        )
+
+        self.assertEqual(resultado, 101.48)
 
 if __name__ == "__main__":
     unittest.main()
